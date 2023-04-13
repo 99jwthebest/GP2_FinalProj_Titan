@@ -84,7 +84,7 @@ void AGP2_JH_PersonalProjCharacter::SetupPlayerInputComponent(class UInputCompon
 		EnhancedInputComponent->BindAction(CrouchAction, ETriggerEvent::Started, this, &AGP2_JH_PersonalProjCharacter::Crouching);
 
 		//Sprinting
-		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Triggered, this, &AGP2_JH_PersonalProjCharacter::Sprinting);
+		EnhancedInputComponent->BindAction(SprintAction, ETriggerEvent::Started, this, &AGP2_JH_PersonalProjCharacter::Sprinting);
 
 		
 	}
