@@ -365,7 +365,7 @@ void UParkourMovementComponent::JumpEventCustom()
 			PlayJumpLandShake();
 		}
 	}
-	else
+	else 
 	{
 		WallRunJump();
 		LedgeGrabJump();
