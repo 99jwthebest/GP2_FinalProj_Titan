@@ -58,6 +58,11 @@ public:
 
 	UPROPERTY(VisibleAnywhere)
 	UParkourMovementComponent* parkourMove;
+
+	UPROPERTY(BlueprintReadWrite, Category = Target) 
+		int Target;
+	UPROPERTY(BlueprintReadWrite, Category = Target) 
+		int TargetHit;
 		
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))

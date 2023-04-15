@@ -83,7 +83,7 @@ public:
 	EMovementMode CurrentMovementMode;
 
 	EParkourMovementType PrevParkourMovementMode;
-	UPROPERTY(BlueprintReadWrite, Category = Weapon)
+	UPROPERTY(BlueprintReadWrite, Category = Weapon) 
 	EParkourMovementType CurrentParkourMovementMode;
 	
 	EParkourMovementType NoneMode;

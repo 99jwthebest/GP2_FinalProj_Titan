@@ -42,6 +42,7 @@ void UTP_WeaponComponent::Fire()
 	
 			// Spawn the projectile at the muzzle
 			World->SpawnActor<AGP2_JH_PersonalProjProjectile>(ProjectileClass, SpawnLocation, SpawnRotation, ActorSpawnParams);
+			UE_LOG(LogTemp, Warning, TEXT("Is Firing!!"))
 		}
 	}
 	

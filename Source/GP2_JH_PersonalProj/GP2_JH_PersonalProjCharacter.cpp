@@ -38,8 +38,6 @@ AGP2_JH_PersonalProjCharacter::AGP2_JH_PersonalProjCharacter()
 
 	JumpMaxCount = 2;
 
-
-	
 }
 
 void AGP2_JH_PersonalProjCharacter::BeginPlay()
