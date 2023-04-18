@@ -8,7 +8,7 @@ AGP2_JH_PersonalProjProjectile::AGP2_JH_PersonalProjProjectile()
 {
 	// Use a sphere as a simple collision representation
 	CollisionComp = CreateDefaultSubobject<USphereComponent>(TEXT("SphereComp"));
-	CollisionComp->InitSphereRadius(5.0f);
+	CollisionComp->InitSphereRadius(5.0f); 
 	CollisionComp->BodyInstance.SetCollisionProfileName("Projectile");
 	CollisionComp->OnComponentHit.AddDynamic(this, &AGP2_JH_PersonalProjProjectile::OnHit);		// set up a notification for when this component hits something blocking
 
