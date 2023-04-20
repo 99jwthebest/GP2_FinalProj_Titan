@@ -21,8 +21,6 @@ class AGP2_JH_PersonalProjCharacter : public ACharacter
 	GENERATED_BODY()
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
-	UPROPERTY(EditDefaultsOnly, Category=Mesh)
-	USkeletalMeshComponent* Mesh1P;
 
 	/** First person camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
@@ -55,6 +53,9 @@ protected:
 	virtual void BeginPlay();
 
 public:
+
+	UPROPERTY(BlueprintReadWrite, Category=Mesh)
+	USkeletalMeshComponent* Mesh1P;
 
 	UPROPERTY(VisibleAnywhere)
 	UParkourMovementComponent* parkourMove;
