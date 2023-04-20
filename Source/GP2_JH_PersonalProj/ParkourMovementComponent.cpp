@@ -129,7 +129,7 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 			{
 				SetParkourMovementMode(RightWRun);
 
-				MyCharacter->myJumpCount = 0;
+				MyCharacter->myJumpCount = -1;
 				UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
 
 				
@@ -146,7 +146,7 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 				{
 					SetParkourMovementMode(LeftWRun);
 					
-					MyCharacter->myJumpCount = 0;
+					MyCharacter->myJumpCount = -1;
 					UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
 
 

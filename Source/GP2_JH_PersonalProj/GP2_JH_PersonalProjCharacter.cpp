@@ -155,7 +155,7 @@ void AGP2_JH_PersonalProjCharacter::Jump()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), myJumpCount)
 	
-	if (myJumpCount == 1 && myJumpCount != 0)
+	if (myJumpCount == 1)
 	{
 		FVector LaunchVelocity = FVector(0.0f, 0.0f, GetCharacterMovement()->JumpZVelocity = 1000.0f);
 		LaunchCharacter(LaunchVelocity, false, false);
