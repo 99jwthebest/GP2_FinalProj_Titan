@@ -117,7 +117,7 @@ void UTP_WeaponComponent::FireStopped()
 {
 	isFiring = false;
 	UE_LOG(LogTemp, Warning, TEXT("Is Firing is FALSESSESESE!!"))
-
+	
 }
 
 void UTP_WeaponComponent::AttachWeapon(AGP2_JH_PersonalProjCharacter* TargetCharacter)
