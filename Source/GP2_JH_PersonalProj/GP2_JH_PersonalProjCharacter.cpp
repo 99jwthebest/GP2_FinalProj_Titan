@@ -38,6 +38,9 @@ AGP2_JH_PersonalProjCharacter::AGP2_JH_PersonalProjCharacter()
 
 	JumpMaxCount = 2;
 
+	myJumpCount = 0;
+	myMaxJumpCount = 2;
+
 }
 
 void AGP2_JH_PersonalProjCharacter::BeginPlay()
@@ -134,13 +137,36 @@ void AGP2_JH_PersonalProjCharacter::Landed(const FHitResult& Hit)
 	//The "Super::Landed(Hit)" call is necessary to ensure that the default implementation in the AActor class is called first.
 	UE_LOG(LogTemp, Warning, TEXT("Land is working!!!"))
 
+	GetCharacterMovement()->JumpZVelocity = 500.0f;
+	myJumpCount = 0;
 	parkourMove->LandEventCustom();
 }
 
 void AGP2_JH_PersonalProjCharacter::Jump()
 {
 	Super::Jump();
-	//UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), JumpCurrentCount)
+	
+	//if (GetCharacterMovement()->IsFalling() && parkourMove->CurrentParkourMovementMode == EParkourMovementType::None)
+	//{
+	//}
+	UE_LOG(LogTemp, Warning, TEXT("Jump Velocity: %f"), GetCharacterMovement()->JumpZVelocity)
+	if(GetCharacterMovement()->IsFalling())
+	myJumpCount++;
+	
+	UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), myJumpCount)
+	
+	if (myJumpCount == 1 && myJumpCount != 0)
+	{
+		FVector LaunchVelocity = FVector(0.0f, 0.0f, GetCharacterMovement()->JumpZVelocity = 1000.0f);
+		LaunchCharacter(LaunchVelocity, false, false);
+		UE_LOG(LogTemp, Warning, TEXT("Updated Jump Velocity: %f"), GetCharacterMovement()->JumpZVelocity)
+	}
+	if (myJumpCount >= 2)
+	{
+		StopJumping();
+		myJumpCount = myMaxJumpCount;
+	}
+	
 	parkourMove->JumpEventCustom();
 }
 

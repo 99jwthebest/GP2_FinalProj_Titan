@@ -21,7 +21,7 @@ class AGP2_JH_PersonalProjCharacter : public ACharacter
 	GENERATED_BODY()
 
 	/** Pawn mesh: 1st person view (arms; seen only by self) */
-	UPROPERTY(VisibleDefaultsOnly, Category=Mesh)
+	UPROPERTY(EditDefaultsOnly, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
 	/** First person camera */
@@ -63,7 +63,11 @@ public:
 		int Target;
 	UPROPERTY(BlueprintReadWrite, Category = Target) 
 		int TargetHit;
-		
+	UPROPERTY(EditAnywhere, Category = Movement) 
+		int myJumpCount;
+	UPROPERTY(EditAnywhere, Category = Movement) 
+		int myMaxJumpCount;
+	
 	/** Look Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	class UInputAction* LookAction;

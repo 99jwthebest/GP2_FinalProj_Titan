@@ -129,6 +129,10 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 			{
 				SetParkourMovementMode(RightWRun);
 
+				MyCharacter->myJumpCount = 0;
+				UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
+
+				
 				SetWallRunGravity();
 			}
 			else if (CurrentParkourMovementMode == EParkourMovementType::RightWallRun)
@@ -142,6 +146,10 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 				{
 					SetParkourMovementMode(LeftWRun);
 					
+					MyCharacter->myJumpCount = 0;
+					UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
+
+
 					SetWallRunGravity();
 				}
 				else
