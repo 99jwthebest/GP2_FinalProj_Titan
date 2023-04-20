@@ -66,6 +66,9 @@ void UTP_WeaponComponent::Fire()
 
 void UTP_WeaponComponent::Fire2()
 {
+
+	isFiring = true;
+	
 	if (Character == nullptr || Character->GetController() == nullptr)
 	{
 		return;
@@ -110,6 +113,13 @@ void UTP_WeaponComponent::Fire2()
 	}
 }
 
+void UTP_WeaponComponent::FireStopped()
+{
+	isFiring = false;
+	UE_LOG(LogTemp, Warning, TEXT("Is Firing is FALSESSESESE!!"))
+
+}
+
 void UTP_WeaponComponent::AttachWeapon(AGP2_JH_PersonalProjCharacter* TargetCharacter)
 {
 	Character = TargetCharacter;
@@ -138,6 +148,8 @@ void UTP_WeaponComponent::AttachWeapon(AGP2_JH_PersonalProjCharacter* TargetChar
 		{
 			// Fire
 			EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &UTP_WeaponComponent::Fire2);
+			//EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &UTP_WeaponComponent::FireStopped);
+
 		}
 	}
 }

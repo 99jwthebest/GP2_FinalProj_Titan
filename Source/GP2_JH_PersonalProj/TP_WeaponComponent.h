@@ -52,6 +52,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Weapon")
 	void Fire2();
 
+	UFUNCTION(BlueprintCallable, Category="Weapon")
+	void FireStopped();
+
+	UPROPERTY(VisibleAnywhere)
+	bool isFiring;
+
 protected:
 	/** Ends gameplay for this component. */
 	UFUNCTION()
