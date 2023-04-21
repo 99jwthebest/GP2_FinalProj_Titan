@@ -67,6 +67,7 @@ public:
 	float ledgeGrabJumpHeight;
 	float sprintSpeed;
 	float slideImpulseAmount;
+	float slideImpulseAmount2;
 	float WallRunSprintSpeed;
 	FTimerHandle TimerForWallRunSuppressed;
 	UPROPERTY(VisibleAnywhere)
@@ -77,6 +78,9 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	bool SprintQueued;
 	bool SlideQueued;
+
+	int slideCount;
+	float slidecountTIMING;
 	
 
 	EMovementMode PrevMovementMode;
@@ -180,6 +184,7 @@ public:
 	void CheckQueues();
 	void SlideJump();
 	void CrouchJump();
+	void SlideCountingUp();
 	
 protected:
 	// Called when the game starts

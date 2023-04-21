@@ -35,6 +35,7 @@ UParkourMovementComponent::UParkourMovementComponent()
 	sprintSpeed = 1000.0f;
 	slideImpulseAmount = 600.0f;
 	WallRunSprintSpeed = 1200.0f;
+	slideImpulseAmount2 = 2000.0f;
 
 	NoneMode = EParkourMovementType::None;
 	RightWRun = EParkourMovementType::RightWallRun;
@@ -62,6 +63,8 @@ UParkourMovementComponent::UParkourMovementComponent()
 
 	SprintQueued = false;	
 
+	slideCount = 0;
+	slidecountTIMING = 0.0f;
 }
 
 
@@ -88,6 +91,7 @@ void UParkourMovementComponent::InitializeP()
 {
 	if (MyCharacter != nullptr)
 	{
+
 		//Default Values
 		DefaultGravity = MyCharacter->GetCharacterMovement()->GravityScale;
 		DefaultGroundFriction = MyCharacter->GetCharacterMovement()->GroundFriction;
@@ -102,6 +106,9 @@ void UParkourMovementComponent::InitializeP()
 		FTimerHandle MyTimerHandleSpT;
 		FTimerHandle MyTimerHandleSlideT;
 
+		FTimerHandle MyTimerHandleSLIDECount;
+
+
 		
 		UE_LOG(LogTemp, Warning, TEXT("Runnning Timer EVent!!"))
 
@@ -111,6 +118,8 @@ void UParkourMovementComponent::InitializeP()
 		GetWorld()->GetTimerManager().SetTimer(MyTimerHandleSpT, this, &UParkourMovementComponent::SprintUpdate, 0.0167f, true);
 		GetWorld()->GetTimerManager().SetTimer(MyTimerHandleSlideT, this, &UParkourMovementComponent::SlideUpdate, 0.0167f, true);
 		GetWorld()->GetTimerManager().SetTimer(MyTimerHandleCT, this, &UParkourMovementComponent::CameraTick, 0.0167f, true);
+
+		GetWorld()->GetTimerManager().SetTimer(MyTimerHandleSLIDECount, this, &UParkourMovementComponent::SlideCountingUp, 1.0f, true);
 	}
 }
 
@@ -279,7 +288,7 @@ void UParkourMovementComponent::CameraTick()
 	{
 		case EParkourMovementType::None:
 			CameraTilt(0.0f);
-		//UE_LOG(LogTemp, Warning, TEXT("mode is set to none after sprinting!!"))
+		 // UE_LOG(LogTemp, Warning, TEXT("mode is set to none after sprinting!!"))
 			break;
 		case EParkourMovementType::LeftWallRun:
 			CameraTilt(15.0f);
@@ -302,9 +311,13 @@ void UParkourMovementComponent::CameraTick()
 			break;
 		case EParkourMovementType::Crouch:
 			CameraTilt(0.0f);
+		//UE_LOG(LogTemp, Warning, TEXT("mode is set to CROUCHING after sprinting!!"))
+
 			break;
 		case EParkourMovementType::Sprint:
 			CameraTilt(0.0f);
+		//UE_LOG(LogTemp, Warning, TEXT("mode is set to SPRINTING after sprinting!!"))
+
 			break;
 		default:
 			//MyCharacter->GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Walking, (uint8)EParkourMovementType::Sprint);
@@ -437,7 +450,7 @@ void UParkourMovementComponent::ResetMovement()
 		MyCharacter->GetCharacterMovement()->BrakingDecelerationWalking = DefaultBrakingDeceleration;
 		MyCharacter->GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		MyCharacter->GetCharacterMovement()->MaxWalkSpeedCrouched = DefaultCrouchSpeed;
-
+		slideCount = 0;
 		MyCharacter->GetCharacterMovement()->SetPlaneConstraintEnabled(false);
 
 		//UE_LOG(LogTemp, Warning, TEXT("MovementMode is equal to leftWallRun, in reset!!"))
@@ -1004,19 +1017,33 @@ void UParkourMovementComponent::SlideStart()
 		FVector crossProductOfSlide = FVector::CrossProduct(HitResult.ImpactNormal, actRightVec) * -1.0f;
 
 		FVector impulse = crossProductOfSlide * slideImpulseAmount;
-		if(crossProductOfSlide.Z <= 0.02f)
+		FVector impulse2 = crossProductOfSlide * slideImpulseAmount2;
+
+		if(crossProductOfSlide.Z <= 0.02f && slideCount < 1)
 		{
 			MyCharacter->GetCharacterMovement()->AddImpulse(impulse, true);
 			OpenSlideGate();
 
+			SprintQueued = true;
+			SlideQueued = true;
+			slideCount++;
+		}
+		else if(crossProductOfSlide.Z <= 0.02f && slideCount >= 1 && slidecountTIMING > 6)
+		{
+			MyCharacter->GetCharacterMovement()->AddImpulse(impulse2, true);
+			OpenSlideGate();
+	
 			SprintQueued = false;
 			SlideQueued = false;
+			slideCount++;
+			slidecountTIMING = 0;
 		}
 		else
 		{
 			OpenSlideGate();
 			SprintQueued = false;
 			SlideQueued = false;
+			slideCount++;
 		}
 
 	}
@@ -1075,9 +1102,13 @@ void UParkourMovementComponent::SprintUpdate()
 	{
 		if(CurrentParkourMovementMode == EParkourMovementType::Sprint)
 		{
-			if (DetectForwardInput() > 0.0f)
+			if (DetectForwardInput() > 0.0f && MyCharacter->GetCharacterMovement()->IsFalling())
 			{
-
+				SprintQueued = true;
+			}
+			else if (DetectForwardInput() > 0.0f)
+			{
+				
 			}
 			else
 			{
@@ -1109,6 +1140,7 @@ void UParkourMovementComponent::SlideUpdate()
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Slide Ending!!"))
 				SlideEnd(true);
+				slideCount = 0;
 			}
 		}
 	}
@@ -1150,6 +1182,11 @@ void UParkourMovementComponent::CrouchJump()
 	{
 		CrouchEnd();
 	}
+}
+
+void UParkourMovementComponent::SlideCountingUp()
+{
+	slidecountTIMING++;
 }
 
 
