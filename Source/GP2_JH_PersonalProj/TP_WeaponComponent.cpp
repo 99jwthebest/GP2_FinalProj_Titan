@@ -96,7 +96,7 @@ void UTP_WeaponComponent::Fire2()
 	
 	UE_LOG(LogTemp, Warning, TEXT("Is Firing!!"))
 	// Try and play the sound if specified
-	if (FireSound != nullptr)
+	/*if (FireSound != nullptr)
 	{
 		UGameplayStatics::PlaySoundAtLocation(this, FireSound, Character->GetActorLocation());
 	}
@@ -110,7 +110,7 @@ void UTP_WeaponComponent::Fire2()
 		{
 			AnimInstance->Montage_Play(FireAnimation, 2.f);
 		}
-	}
+	}*/
 }
 
 void UTP_WeaponComponent::FireStopped()
