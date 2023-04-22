@@ -81,6 +81,10 @@ public:
 
 	int slideCount;
 	float slidecountTIMING;
+	int wallcountTIMING;
+	int verticalWallRunCOOLDOWN;
+	int ActualVerticalRunCOOLDOWN;
+
 	
 
 	EMovementMode PrevMovementMode;
@@ -185,6 +189,7 @@ public:
 	void SlideJump();
 	void CrouchJump();
 	void SlideCountingUp();
+	void WallRUNCountUP();
 	
 protected:
 	// Called when the game starts
