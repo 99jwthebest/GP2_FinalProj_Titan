@@ -833,6 +833,8 @@ void UParkourMovementComponent::MantleCheck()
 				MyCharacter->GetController()->ResetIgnoreLookInput();
 				VerticalWallRunEnd(0.5f);
 				UE_LOG(LogTemp, Warning, TEXT("Made it to quick mantle end!!"))
+				MyCharacter->myJumpCount = 0;
+				MyCharacter->GetCharacterMovement()->JumpZVelocity = 500.0f;
 
 			}
 		}
@@ -846,6 +848,9 @@ void UParkourMovementComponent::MantleCheck()
 				MyCharacter->GetController()->ResetIgnoreLookInput();
 				VerticalWallRunEnd(0.5f);
 				UE_LOG(LogTemp, Warning, TEXT("Made it to slow mantle end!!"))
+				MyCharacter->myJumpCount = 0;
+				MyCharacter->GetCharacterMovement()->JumpZVelocity = 500.0f;
+
 			}
 		}
 	}

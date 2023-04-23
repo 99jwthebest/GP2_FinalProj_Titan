@@ -157,8 +157,13 @@ void AGP2_JH_PersonalProjCharacter::Jump()
 	
 	if (myJumpCount == 1)
 	{
-		FVector LaunchVelocity = FVector(0.0f, 0.0f, GetCharacterMovement()->JumpZVelocity = 1000.0f);
+		float DashDistance = 500.0f;
+		FVector DashDirection = GetCharacterMovement()->GetCurrentAcceleration().GetSafeNormal();
+		FVector DashImpulse = DashDirection * DashDistance;
+		
+		FVector LaunchVelocity = FVector(DashImpulse.X, DashImpulse.Y, GetCharacterMovement()->JumpZVelocity = 1000.0f);
 		LaunchCharacter(LaunchVelocity, false, false);
+
 		UE_LOG(LogTemp, Warning, TEXT("Updated Jump Velocity: %f"), GetCharacterMovement()->JumpZVelocity)
 	}
 	if (myJumpCount >= 2)
