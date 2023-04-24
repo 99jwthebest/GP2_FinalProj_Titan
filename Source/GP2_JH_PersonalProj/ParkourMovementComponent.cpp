@@ -367,7 +367,7 @@ void UParkourMovementComponent::WallRunJump()
 
 void UParkourMovementComponent::LandEventCustom()
 {
-
+	wallcountTIMING = 0;
 	verticalWallRunCOOLDOWN = 0;
 	ActualVerticalRunCOOLDOWN = 0;
 	UE_LOG(LogTemp, Warning, TEXT("Vertical Wall Run COOL DOWN: %i"), verticalWallRunCOOLDOWN)
