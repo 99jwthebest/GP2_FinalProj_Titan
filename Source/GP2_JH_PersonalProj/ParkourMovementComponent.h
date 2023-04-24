@@ -80,7 +80,9 @@ public:
 	bool SlideQueued;
 
 	int slideCount;
+	UPROPERTY(BlueprintReadWrite, Category = Slide)
 	float slidecountTIMING;
+	
 	int wallcountTIMING;
 	int verticalWallRunCOOLDOWN;
 	int ActualVerticalRunCOOLDOWN;

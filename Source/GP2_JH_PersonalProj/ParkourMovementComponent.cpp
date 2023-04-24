@@ -297,6 +297,9 @@ void UParkourMovementComponent::CameraTick()
 	{
 		case EParkourMovementType::None:
 			CameraTilt(0.0f);
+			wallcountTIMING = 0;
+			WallRunGravity = false;
+			//UE_LOG(LogTemp, Warning, TEXT("Wall Counting from NONE: %i"), wallcountTIMING);
 		 // UE_LOG(LogTemp, Warning, TEXT("mode is set to none after sprinting!!"))
 			break;
 		case EParkourMovementType::LeftWallRun:
@@ -1016,14 +1019,13 @@ void UParkourMovementComponent::SlideStart()
 		MyCharacter->Crouch();
 
 		MyCharacter->GetCharacterMovement()->GroundFriction = 0.0f;
-		MyCharacter->GetCharacterMovement()->BrakingDecelerationWalking = 1400.0; //can change it if you want to make it slide for a longer time
+		MyCharacter->GetCharacterMovement()->BrakingDecelerationWalking = 1000.0; //can change it if you want to make it slide for a longer time
 		MyCharacter->GetCharacterMovement()->MaxWalkSpeedCrouched = 0.0f;
 
-		FVector forwardVelNormalized = MyCharacter->GetCharacterMovement()->Velocity.GetSafeNormal(); //might have to change to normalize or kismetVector normalize
-		MyCharacter->GetCharacterMovement()->SetPlaneConstraintFromVectors(forwardVelNormalized, MyCharacter->GetActorUpVector());
+		//FVector forwardVelNormalized = MyCharacter->GetCharacterMovement()->Velocity.GetSafeNormal(); //might have to change to normalize or kismetVector normalize
+		//MyCharacter->GetCharacterMovement()->SetPlaneConstraintFromVectors(forwardVelNormalized, MyCharacter->GetActorUpVector());
 
-		MyCharacter->GetCharacterMovement()->SetPlaneConstraintEnabled(true);
-
+		//MyCharacter->GetCharacterMovement()->SetPlaneConstraintEnabled(true);
 
 		//Get Slide Vector
 		FHitResult HitResult;
@@ -1225,9 +1227,9 @@ void UParkourMovementComponent::WallRUNCountUP()
 {
 	if (CurrentParkourMovementMode == EParkourMovementType::None)
 	{
-		wallcountTIMING = 0;
-		WallRunGravity = false;
-		UE_LOG(LogTemp, Warning, TEXT("Wall Counting from NONE: %i"), wallcountTIMING);
+		//wallcountTIMING = 0;
+	//	WallRunGravity = false;
+		//UE_LOG(LogTemp, Warning, TEXT("Wall Counting from NONE: %i"), wallcountTIMING);
 	}
 	else if(wallcountTIMING >= 1 && CurrentParkourMovementMode == EParkourMovementType::LeftWallRun ||
 			wallcountTIMING >= 1 && CurrentParkourMovementMode == EParkourMovementType::RightWallRun)

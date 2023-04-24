@@ -100,11 +100,23 @@ void AGP2_JH_PersonalProjCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
+	FVector2D MovementVectorTweak = MovementVector * 0.2;
+	
 	if (Controller != nullptr)
 	{
-		// add movement 
-		AddMovementInput(GetActorForwardVector(), MovementVector.Y);
-		AddMovementInput(GetActorRightVector(), MovementVector.X);
+
+		if (parkourMove->CurrentParkourMovementMode == EParkourMovementType::Slide)
+		{
+			AddMovementInput(GetActorRightVector(), MovementVectorTweak.X);
+			//UE_LOG(LogTemp, Warning, TEXT("Movement Vector Tweak X: %f"), MovementVectorTweak.X)
+		}
+		else
+		{
+			// add movement 
+			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
+			AddMovementInput(GetActorRightVector(), MovementVector.X);
+			//UE_LOG(LogTemp, Warning, TEXT("Movement Vector X: %f"), MovementVector.X)
+		}
 	}
 }
 
@@ -153,15 +165,15 @@ void AGP2_JH_PersonalProjCharacter::Jump()
 	if(GetCharacterMovement()->IsFalling())
 	myJumpCount++;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), myJumpCount)
+	UE_LOG(LogTemp, Warning, TEXT("Jump Count FJump: %i"), myJumpCount)
 	
 	if (myJumpCount == 1)
 	{
-		float DashDistance = 500.0f;
+		float DashDistance = 300.0f;
 		FVector DashDirection = GetCharacterMovement()->GetCurrentAcceleration().GetSafeNormal();
 		FVector DashImpulse = DashDirection * DashDistance;
 		
-		FVector LaunchVelocity = FVector(DashImpulse.X, DashImpulse.Y, GetCharacterMovement()->JumpZVelocity = 1000.0f);
+		FVector LaunchVelocity = FVector(DashImpulse.X, DashImpulse.Y, GetCharacterMovement()->JumpZVelocity = 600.0f);
 		LaunchCharacter(LaunchVelocity, false, false);
 
 		UE_LOG(LogTemp, Warning, TEXT("Updated Jump Velocity: %f"), GetCharacterMovement()->JumpZVelocity)
