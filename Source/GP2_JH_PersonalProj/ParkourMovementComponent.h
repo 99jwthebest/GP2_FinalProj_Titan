@@ -84,7 +84,6 @@ public:
 	float slidecountTIMING;
 	
 	int wallcountTIMING;
-	int verticalWallRunCOOLDOWN;
 	int ActualVerticalRunCOOLDOWN;
 
 	

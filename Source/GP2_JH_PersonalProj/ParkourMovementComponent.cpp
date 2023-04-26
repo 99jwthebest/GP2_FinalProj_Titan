@@ -66,7 +66,6 @@ UParkourMovementComponent::UParkourMovementComponent()
 	slideCount = 0;
 	slidecountTIMING = 0.0f;
 	wallcountTIMING = 0;
-	verticalWallRunCOOLDOWN = 0;
 	ActualVerticalRunCOOLDOWN = 0;
 }
 
@@ -145,10 +144,7 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 
 				MyCharacter->myJumpCount = -1;
 				//UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
-				verticalWallRunCOOLDOWN++;
-				//UE_LOG(LogTemp, Warning, TEXT("Vertical Wall Run COOL DOWN: %i"), verticalWallRunCOOLDOWN)
 
-				
 				SetWallRunGravity();
 			}
 			else if (CurrentParkourMovementMode == EParkourMovementType::RightWallRun)
@@ -164,9 +160,6 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 					
 					MyCharacter->myJumpCount = -1;
 					//UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
-
-					verticalWallRunCOOLDOWN++;
-					//UE_LOG(LogTemp, Warning, TEXT("Vertical Wall Run COOL DOWN: %i"), verticalWallRunCOOLDOWN)
 
 					SetWallRunGravity();
 				}
@@ -371,9 +364,7 @@ void UParkourMovementComponent::WallRunJump()
 void UParkourMovementComponent::LandEventCustom()
 {
 	wallcountTIMING = 0;
-	verticalWallRunCOOLDOWN = 0;
 	ActualVerticalRunCOOLDOWN = 0;
-	UE_LOG(LogTemp, Warning, TEXT("Vertical Wall Run COOL DOWN: %i"), verticalWallRunCOOLDOWN)
 	UE_LOG(LogTemp, Warning, TEXT("Actual Vertical Wall RUn COOLDOWN: %i"), ActualVerticalRunCOOLDOWN);
 
 	//end events
@@ -597,7 +588,7 @@ void UParkourMovementComponent::CloseVerticalWallRunGate()
 
 void UParkourMovementComponent::VerticalWallRunUpdate()
 {
-	if(openVerticalWallRunGate == true && closeVerticalWallRunGate == false && verticalWallRunCOOLDOWN < 100 && ActualVerticalRunCOOLDOWN < 90)
+	if(openVerticalWallRunGate == true && closeVerticalWallRunGate == false)
 	{
 		if(DetectForwardInput() > 0.0f && MyCharacter->GetCharacterMovement()->IsFalling() &&
 			CurrentParkourMovementMode == EParkourMovementType::None || CurrentParkourMovementMode == EParkourMovementType::VerticalWallRun ||
@@ -738,7 +729,8 @@ void UParkourMovementComponent::VerticalWallRunMovement()
 	FVector multipliedForwVector = MyCharacter->GetActorForwardVector() * 50.0f;
 	FVector addResult = Feet + multipliedForwVector;
 
-	if(DetectForwardInput() > 0.0f && GetWorld()->LineTraceSingleByChannel(HitResult, Feet, addResult, ECC_Visibility, TraceParams))
+	if(DetectForwardInput() > 0.0f && GetWorld()->LineTraceSingleByChannel(HitResult, Feet, addResult, ECC_Visibility, TraceParams)
+		 && ActualVerticalRunCOOLDOWN < 90)
 	{
 		VerticalWallRunNormal = HitResult.ImpactNormal;
 		SetParkourMovementMode(VerticalWRunMode);
@@ -1058,7 +1050,7 @@ void UParkourMovementComponent::SlideStart()
 			SprintQueued = true;
 			//SlideQueued = true;
 		}
-		else if(crossProductOfSlide.Z <= 0.02f && slideCount >= 1 && slidecountTIMING > 6)
+		else if(crossProductOfSlide.Z <= 0.02f && slideCount >= 1 && slidecountTIMING >= 5)
 		{
 			MyCharacter->GetCharacterMovement()->AddImpulse(impulse2, true);
 			OpenSlideGate();
@@ -1111,6 +1103,8 @@ void UParkourMovementComponent::SlideEnd(bool crouch)
 				CloseSlideGate();
 
 				MyCharacter->UnCrouch();
+				UE_LOG(LogTemp, Warning, TEXT("M TRUCKER is uncrouched!!"))
+				
 			}
 		}
 	}
@@ -1207,6 +1201,17 @@ void UParkourMovementComponent::SlideJump()
 	if(CurrentParkourMovementMode == EParkourMovementType::Slide)
 	{
 		SlideEnd(false);
+		
+		float DashDistance = 300.0f;
+		FVector DashDirection = MyCharacter->GetCharacterMovement()->GetCurrentAcceleration().GetSafeNormal();
+		FVector DashImpulse = DashDirection * DashDistance;
+		
+		FVector LaunchVelocity = FVector(DashImpulse.X, DashImpulse.Y, MyCharacter->GetCharacterMovement()->JumpZVelocity = 600.0f);
+		MyCharacter->LaunchCharacter(LaunchVelocity, false, false);
+
+		UE_LOG(LogTemp, Warning, TEXT("From Slide Jump Velocity: %f"), MyCharacter->GetCharacterMovement()->JumpZVelocity)
+		SprintQueued = false;
+
 	}
 }
 
@@ -1221,6 +1226,7 @@ void UParkourMovementComponent::CrouchJump()
 void UParkourMovementComponent::SlideCountingUp()
 {
 	slidecountTIMING++;
+	UE_LOG(LogTemp, Warning, TEXT("slideCount: %f"), slidecountTIMING)
 }
 
 void UParkourMovementComponent::WallRUNCountUP()
