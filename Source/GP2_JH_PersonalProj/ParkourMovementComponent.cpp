@@ -460,6 +460,7 @@ void UParkourMovementComponent::ResetMovement()
 		MyCharacter->GetCharacterMovement()->MaxWalkSpeed = DefaultWalkSpeed;
 		MyCharacter->GetCharacterMovement()->MaxWalkSpeedCrouched = DefaultCrouchSpeed;
 		//slideCount = 0;
+
 		MyCharacter->GetCharacterMovement()->SetPlaneConstraintEnabled(false);
 
 		//UE_LOG(LogTemp, Warning, TEXT("MovementMode is equal to leftWallRun, in reset!!"))
@@ -867,7 +868,8 @@ void UParkourMovementComponent::LedgeGrabJump()
 	{
 		VerticalWallRunEnd(0.35);
 
-	
+		MyCharacter->GetController()->ResetIgnoreLookInput();
+
 		float multipliedXvector = VerticalWallRunNormal.X * ledgeGrabJumpOffForce;  //Vertical Wall Run Normal has no info.
 		float multipliedYvector = VerticalWallRunNormal.Y * ledgeGrabJumpOffForce;
 		FVector launchVel (multipliedXvector, multipliedYvector, ledgeGrabJumpHeight);
