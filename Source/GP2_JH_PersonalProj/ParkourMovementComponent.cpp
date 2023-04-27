@@ -9,6 +9,7 @@
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
 #include "LegacyCameraShake.h"
+#include "SprintingShake.h"
 #include "TimerManager.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -33,7 +34,7 @@ UParkourMovementComponent::UParkourMovementComponent()
 	ledgeGrabJumpOffForce = 300.0f;
 	ledgeGrabJumpHeight = 400.0f;
 	sprintSpeed = 1000.0f;
-	slideImpulseAmount = 600.0f;
+	slideImpulseAmount = 700.0f;
 	WallRunSprintSpeed = 1200.0f;
 	slideImpulseAmount2 = 2000.0f;
 
@@ -321,6 +322,7 @@ void UParkourMovementComponent::CameraTick()
 			break;
 		case EParkourMovementType::Sprint:
 			CameraTilt(0.0f);
+			PlaySprintingShake();
 		//UE_LOG(LogTemp, Warning, TEXT("mode is set to SPRINTING after sprinting!!"))
 
 			break;
@@ -570,6 +572,19 @@ void UParkourMovementComponent::PlayQuickMantleShake()
 		float fallOff = 1.0f;
 		
 		UGameplayStatics::PlayWorldCameraShake(GetWorld(), UQuickMantleShake::StaticClass(), shakeRot, innerRadius, outerRadius, fallOff, false);
+	}
+}
+
+void UParkourMovementComponent::PlaySprintingShake()
+{
+	if(CameraShake)
+	{
+		FVector shakeRot = MyCharacter->GetActorLocation();
+		float innerRadius = 0.0f;
+		float outerRadius = 100.0f;
+		float fallOff = 1.0f;
+		
+		UGameplayStatics::PlayWorldCameraShake(GetWorld(), USprintingShake::StaticClass(), shakeRot, innerRadius, outerRadius, fallOff, false);
 	}
 }
 
@@ -1046,7 +1061,7 @@ void UParkourMovementComponent::SlideStart()
 			OpenSlideGate();
 			slideCount++;
 			//UE_LOG(LogTemp, Warning, TEXT("slideCount: %i"), slideCount)
-
+			 MyCharacter->FovSlideChange();
 			UE_LOG(LogTemp, Warning, TEXT("FIRST SLIDE!!!!"))
 
 			SprintQueued = true;
@@ -1057,6 +1072,7 @@ void UParkourMovementComponent::SlideStart()
 			MyCharacter->GetCharacterMovement()->AddImpulse(impulse2, true);
 			OpenSlideGate();
 			UE_LOG(LogTemp, Warning, TEXT("SECOND SLIDE!!!!"))
+			//MyCharacter->FovSlideChange();
 
 			SprintQueued = false;
 			SlideQueued = false;
@@ -1088,12 +1104,14 @@ void UParkourMovementComponent::SlideEnd(bool crouch)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("Crouch actually Succeeded!!"))
 					slideCount = 0;
+					MyCharacter->FovSlideChangeEND();
 
 				}
 				else
 				{
 					MyCharacter->UnCrouch();
 					UE_LOG(LogTemp, Warning, TEXT("Uncrouched!!"))
+					MyCharacter->FovSlideChangeEND();
 
 				}
 			}
@@ -1103,7 +1121,7 @@ void UParkourMovementComponent::SlideEnd(bool crouch)
 			if(SetParkourMovementMode(NoneMode))
 			{
 				CloseSlideGate();
-
+				MyCharacter->FovSlideChangeEND();
 				MyCharacter->UnCrouch();
 				UE_LOG(LogTemp, Warning, TEXT("M TRUCKER is uncrouched!!"))
 				

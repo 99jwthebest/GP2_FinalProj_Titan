@@ -150,6 +150,7 @@ public:
 	void PlayLedgeGrabShake();
 	void PlayMantleShake();
 	void PlayQuickMantleShake();
+	void PlaySprintingShake();
 	void OpenVerticalWallRunGate();
 	void CloseVerticalWallRunGate();
 	void VerticalWallRunUpdate();
@@ -191,6 +192,7 @@ public:
 	void CrouchJump();
 	void SlideCountingUp();
 	void WallRUNCountUP();
+	
 	
 protected:
 	// Called when the game starts

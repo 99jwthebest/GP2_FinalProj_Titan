@@ -54,6 +54,11 @@ protected:
 
 public:
 
+	UFUNCTION(BlueprintImplementableEvent)
+	void FovSlideChange();
+	UFUNCTION(BlueprintImplementableEvent)
+	void FovSlideChangeEND();
+	
 	UPROPERTY(BlueprintReadWrite, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;
 
