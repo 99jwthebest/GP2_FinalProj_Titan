@@ -24,8 +24,8 @@ UParkourMovementComponent::UParkourMovementComponent()
 	WallRunGravity = false;
 	wallRunSpeed = 850.0f;
 	WallRunTargetGravity = 0.25f;
-	WallRunJumpHeight = 400.0f;
-	WallRunJumpOffForce = 300.0f;
+	WallRunJumpHeight = 500.0f;
+	WallRunJumpOffForce = 400.0f;
 	mantleHeight = 40.0f;
 	VerticalWallRunSpeed = 300.0f;
 	MantleSpeed = 10.0f;
@@ -351,7 +351,7 @@ void UParkourMovementComponent::WallRunJump()
 {
 	if (CurrentParkourMovementMode == EParkourMovementType::LeftWallRun || CurrentParkourMovementMode == EParkourMovementType::RightWallRun)
 	{
-		float WallXResult = WallRunNormal.X * WallRunJumpOffForce; //WallRunNormal has no info.
+		float WallXResult = WallRunNormal.X * WallRunJumpOffForce; 
 		float WallYResult = WallRunNormal.Y * WallRunJumpOffForce;
 
 		FVector LaunchingVelocity(WallXResult, WallYResult, WallRunJumpHeight);
