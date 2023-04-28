@@ -157,7 +157,7 @@ void AGP2_JH_PersonalProjCharacter::Landed(const FHitResult& Hit)
 void AGP2_JH_PersonalProjCharacter::Jump()
 {
 	Super::Jump();
-	
+
 	//if (GetCharacterMovement()->IsFalling() && parkourMove->CurrentParkourMovementMode == EParkourMovementType::None)
 	//{
 	//}
@@ -169,6 +169,7 @@ void AGP2_JH_PersonalProjCharacter::Jump()
 	
 	if (myJumpCount == 1)
 	{
+		PlayJumpSound();
 		float DashDistance = 300.0f;
 		FVector DashDirection = GetCharacterMovement()->GetCurrentAcceleration().GetSafeNormal();
 		FVector DashImpulse = DashDirection * DashDistance;

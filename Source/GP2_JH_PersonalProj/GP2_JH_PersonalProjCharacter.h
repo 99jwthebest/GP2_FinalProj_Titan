@@ -58,6 +58,10 @@ public:
 	void FovSlideChange();
 	UFUNCTION(BlueprintImplementableEvent)
 	void FovSlideChangeEND();
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlayJumpSound();
+	UFUNCTION(BlueprintImplementableEvent)
+	void PlaySlideBoostSound();
 	
 	UPROPERTY(BlueprintReadWrite, Category=Mesh)
 	USkeletalMeshComponent* Mesh1P;

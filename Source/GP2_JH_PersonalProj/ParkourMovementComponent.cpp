@@ -35,7 +35,7 @@ UParkourMovementComponent::UParkourMovementComponent()
 	ledgeGrabJumpHeight = 400.0f;
 	sprintSpeed = 1000.0f;
 	slideImpulseAmount = 700.0f;
-	WallRunSprintSpeed = 1200.0f;
+	WallRunSprintSpeed = 1300.0f;
 	slideImpulseAmount2 = 2000.0f;
 
 	NoneMode = EParkourMovementType::None;
@@ -94,14 +94,15 @@ void UParkourMovementComponent::InitializeP()
 {
 	if (MyCharacter != nullptr)
 	{
-
+		MyCharacter->GetCharacterMovement()->GravityScale = 1.10f;
 		//Default Values
 		DefaultGravity = MyCharacter->GetCharacterMovement()->GravityScale;
 		DefaultGroundFriction = MyCharacter->GetCharacterMovement()->GroundFriction;
 		DefaultBrakingDeceleration = MyCharacter->GetCharacterMovement()->BrakingDecelerationWalking;
 		DefaultWalkSpeed = MyCharacter->GetCharacterMovement()->MaxWalkSpeed;
 		DefaultCrouchSpeed = MyCharacter->GetCharacterMovement()->MaxWalkSpeedCrouched;
-		
+		UE_LOG(LogTemp, Warning, TEXT("Default Gravity Value: %f !!"), DefaultGravity)
+
 		FTimerHandle MyTimerHandleW;
 		FTimerHandle MyTimerHandleVW;
 		FTimerHandle MyTimerHandleMC;
@@ -265,6 +266,8 @@ void UParkourMovementComponent::SetWallRunGravity()
 	currentValue = FMath::FInterpTo(GScale, WallRunTargetGravity, DeltaTime, 10.0f);
 
 	MyCharacter->GetCharacterMovement()->GravityScale = currentValue;
+	UE_LOG(LogTemp, Warning, TEXT("Gravity Value Updated: %f !!"), MyCharacter->GetCharacterMovement()->GravityScale)
+
 }
 
 void UParkourMovementComponent::WallRunEnd(float ResetTime)
@@ -298,9 +301,13 @@ void UParkourMovementComponent::CameraTick()
 			break;
 		case EParkourMovementType::LeftWallRun:
 			CameraTilt(15.0f);
+			PlaySprintingShake();
+
 			break;
 		case EParkourMovementType::RightWallRun:
 			CameraTilt(-15.0f);
+			PlaySprintingShake();
+
 			break;
 		case EParkourMovementType::VerticalWallRun:
 			CameraTilt(0.0f);
@@ -1072,7 +1079,7 @@ void UParkourMovementComponent::SlideStart()
 			MyCharacter->GetCharacterMovement()->AddImpulse(impulse2, true);
 			OpenSlideGate();
 			UE_LOG(LogTemp, Warning, TEXT("SECOND SLIDE!!!!"))
-			//MyCharacter->FovSlideChange();
+			MyCharacter->PlaySlideBoostSound();
 
 			SprintQueued = false;
 			SlideQueued = false;
