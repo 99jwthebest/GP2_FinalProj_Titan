@@ -68,6 +68,7 @@ public:
 	float sprintSpeed;
 	float slideImpulseAmount;
 	float slideImpulseAmount2;
+	float slideImpulseAmountSlow;
 	float WallRunSprintSpeed;
 	FTimerHandle TimerForWallRunSuppressed;
 	UPROPERTY(VisibleAnywhere)
@@ -82,7 +83,8 @@ public:
 	int slideCount;
 	UPROPERTY(BlueprintReadWrite, Category = Slide)
 	float slidecountTIMING;
-	
+
+	int normalSlideTiming;
 	int wallcountTIMING;
 	int ActualVerticalRunCOOLDOWN;
 

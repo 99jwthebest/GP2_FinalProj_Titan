@@ -37,6 +37,7 @@ UParkourMovementComponent::UParkourMovementComponent()
 	slideImpulseAmount = 700.0f;
 	WallRunSprintSpeed = 1300.0f;
 	slideImpulseAmount2 = 2000.0f;
+	slideImpulseAmountSlow = 100.0f;
 
 	NoneMode = EParkourMovementType::None;
 	RightWRun = EParkourMovementType::RightWallRun;
@@ -66,6 +67,7 @@ UParkourMovementComponent::UParkourMovementComponent()
 
 	slideCount = 0;
 	slidecountTIMING = 0.0f;
+	normalSlideTiming = 0;
 	wallcountTIMING = 0;
 	ActualVerticalRunCOOLDOWN = 0;
 }
@@ -1061,18 +1063,32 @@ void UParkourMovementComponent::SlideStart()
 
 		FVector impulse = crossProductOfSlide * slideImpulseAmount;
 		FVector impulse2 = crossProductOfSlide * slideImpulseAmount2;
+		FVector impulseSlow = crossProductOfSlide * slideImpulseAmountSlow;
 
-		if(crossProductOfSlide.Z <= 0.02f && slideCount < 1)
+		if(crossProductOfSlide.Z <= 0.02f && slideCount < 1 && normalSlideTiming >= 5)
 		{
 			MyCharacter->GetCharacterMovement()->AddImpulse(impulse, true);
 			OpenSlideGate();
 			slideCount++;
 			//UE_LOG(LogTemp, Warning, TEXT("slideCount: %i"), slideCount)
-			 MyCharacter->FovSlideChange();
+			MyCharacter->FovSlideChange();
 			UE_LOG(LogTemp, Warning, TEXT("FIRST SLIDE!!!!"))
 
 			SprintQueued = true;
+			normalSlideTiming = 0;
 			//SlideQueued = true;
+		}
+		else if(crossProductOfSlide.Z <= 0.02f && slideCount < 1)
+		{
+			MyCharacter->GetCharacterMovement()->AddImpulse(impulseSlow, true);
+			OpenSlideGate();
+			slideCount++;
+			//UE_LOG(LogTemp, Warning, TEXT("slideCount: %i"), slideCount)
+			//MyCharacter->FovSlideChange();
+			UE_LOG(LogTemp, Warning, TEXT("SLOW SLIDE!!!!"))
+			normalSlideTiming = 0;
+
+			SprintQueued = true;
 		}
 		else if(crossProductOfSlide.Z <= 0.02f && slideCount >= 1 && slidecountTIMING >= 5)
 		{
@@ -1085,6 +1101,7 @@ void UParkourMovementComponent::SlideStart()
 			SlideQueued = false;
 			slideCount = 0;
 			slidecountTIMING = 0;
+			normalSlideTiming = 0;
 		}
 		else
 		{
@@ -1254,10 +1271,14 @@ void UParkourMovementComponent::SlideCountingUp()
 {
 	slidecountTIMING++;
 	UE_LOG(LogTemp, Warning, TEXT("slideCount: %f"), slidecountTIMING)
+	
 }
 
 void UParkourMovementComponent::WallRUNCountUP()
 {
+	normalSlideTiming++;
+	UE_LOG(LogTemp, Warning, TEXT("Normal Slide Timing: %i"), normalSlideTiming)
+	
 	if (CurrentParkourMovementMode == EParkourMovementType::None)
 	{
 		//wallcountTIMING = 0;
