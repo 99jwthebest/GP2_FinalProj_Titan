@@ -149,7 +149,7 @@ void AGP2_JH_PersonalProjCharacter::Landed(const FHitResult& Hit)
 	//The "Super::Landed(Hit)" call is necessary to ensure that the default implementation in the AActor class is called first.
 	UE_LOG(LogTemp, Warning, TEXT("Land is working!!!"))
 
-	GetCharacterMovement()->JumpZVelocity = 500.0f;
+	GetCharacterMovement()->JumpZVelocity = 600.0f;
 	myJumpCount = 0;
 	parkourMove->LandEventCustom();
 }

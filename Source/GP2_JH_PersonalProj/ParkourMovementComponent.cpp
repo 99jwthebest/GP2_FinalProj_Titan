@@ -94,7 +94,7 @@ void UParkourMovementComponent::InitializeP()
 {
 	if (MyCharacter != nullptr)
 	{
-		MyCharacter->GetCharacterMovement()->GravityScale = 1.10f;
+		MyCharacter->GetCharacterMovement()->GravityScale = 1.15f;
 		//Default Values
 		DefaultGravity = MyCharacter->GetCharacterMovement()->GravityScale;
 		DefaultGroundFriction = MyCharacter->GetCharacterMovement()->GroundFriction;
