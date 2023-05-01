@@ -108,14 +108,12 @@ void AGP2_JH_PersonalProjCharacter::Move(const FInputActionValue& Value)
 		if (parkourMove->CurrentParkourMovementMode == EParkourMovementType::Slide)
 		{
 			AddMovementInput(GetActorRightVector(), MovementVectorTweak.X);
-			//UE_LOG(LogTemp, Warning, TEXT("Movement Vector Tweak X: %f"), MovementVectorTweak.X)
 		}
 		else
 		{
 			// add movement 
 			AddMovementInput(GetActorForwardVector(), MovementVector.Y);
 			AddMovementInput(GetActorRightVector(), MovementVector.X);
-			//UE_LOG(LogTemp, Warning, TEXT("Movement Vector X: %f"), MovementVector.X)
 		}
 	}
 }
@@ -157,10 +155,7 @@ void AGP2_JH_PersonalProjCharacter::Landed(const FHitResult& Hit)
 void AGP2_JH_PersonalProjCharacter::Jump()
 {
 	Super::Jump();
-
-	//if (GetCharacterMovement()->IsFalling() && parkourMove->CurrentParkourMovementMode == EParkourMovementType::None)
-	//{
-	//}
+	
 	UE_LOG(LogTemp, Warning, TEXT("Jump Velocity: %f"), GetCharacterMovement()->JumpZVelocity)
 	if(GetCharacterMovement()->IsFalling())
 	myJumpCount++;

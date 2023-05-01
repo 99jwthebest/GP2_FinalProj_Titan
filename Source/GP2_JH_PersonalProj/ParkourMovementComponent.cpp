@@ -63,7 +63,8 @@ UParkourMovementComponent::UParkourMovementComponent()
 	openMantleGate = false;
 	closeMantleGate = false;
 
-	SprintQueued = false;	
+	SprintQueued = false;
+	cancelRightWallRun = false;
 
 	slideCount = 0;
 	slidecountTIMING = 0.0f;
@@ -142,28 +143,45 @@ void UParkourMovementComponent::WallRunUpdateEvent()
 			CurrentParkourMovementMode == EParkourMovementType::LeftWallRun ||
 			CurrentParkourMovementMode == EParkourMovementType::RightWallRun)
 		{
-			if (WallRunMovement(MyCharacter->GetActorLocation(), rightEndPoint, -1.0f))
+			if (cancelRightWallRun == false)
 			{
-				SetParkourMovementMode(RightWRun);
+				if (WallRunMovement(MyCharacter->GetActorLocation(), rightEndPoint, -1.0f))
+				{
+					SetParkourMovementMode(RightWRun);
+					
+					MyCharacter->myJumpCount = -1;
 
-				MyCharacter->myJumpCount = -1;
-				//UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
+					SetWallRunGravity();
+				}
+				else if (CurrentParkourMovementMode == EParkourMovementType::RightWallRun)
+				{
+					WallRunEnd(0.5f);
+				}
+				else
+				{
+					WallRunEndVectors();
+					if (WallRunMovement(MyCharacter->GetActorLocation(), leftEndPoint, 1.0f))
+					{
+						SetParkourMovementMode(LeftWRun);
+						
+						MyCharacter->myJumpCount = -1;
 
-				SetWallRunGravity();
+						SetWallRunGravity();
+					}
+					else
+					{
+						WallRunEnd(0.5f);
+					}
+				}
 			}
-			else if (CurrentParkourMovementMode == EParkourMovementType::RightWallRun)
-			{
-				WallRunEnd(0.5f);
-			}
-			else
+			else   // for the purpose of the curved wall section
 			{
 				WallRunEndVectors();
 				if (WallRunMovement(MyCharacter->GetActorLocation(), leftEndPoint, 1.0f))
 				{
 					SetParkourMovementMode(LeftWRun);
-					
+						
 					MyCharacter->myJumpCount = -1;
-					//UE_LOG(LogTemp, Warning, TEXT("Jump Count: %i"), MyCharacter->myJumpCount)
 
 					SetWallRunGravity();
 				}
@@ -1090,7 +1108,7 @@ void UParkourMovementComponent::SlideStart()
 
 			SprintQueued = true;
 		}
-		else if(crossProductOfSlide.Z <= 0.02f && slideCount >= 1 && slidecountTIMING >= 5)
+		else if(crossProductOfSlide.Z <= 0.02f && slideCount >= 1 && slidecountTIMING >= 4)
 		{
 			MyCharacter->GetCharacterMovement()->AddImpulse(impulse2, true);
 			OpenSlideGate();

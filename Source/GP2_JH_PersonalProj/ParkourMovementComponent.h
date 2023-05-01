@@ -79,6 +79,8 @@ public:
 	UPROPERTY(VisibleAnywhere)
 	bool SprintQueued;
 	bool SlideQueued;
+	UPROPERTY(BlueprintReadWrite, Category = run)
+	bool cancelRightWallRun;
 
 	int slideCount;
 	UPROPERTY(BlueprintReadWrite, Category = Slide)
