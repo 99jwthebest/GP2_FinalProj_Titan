@@ -100,7 +100,7 @@ void AGP2_JH_PersonalProjCharacter::Move(const FInputActionValue& Value)
 	// input is a Vector2D
 	FVector2D MovementVector = Value.Get<FVector2D>();
 
-	FVector2D MovementVectorTweak = MovementVector * 0.2;
+	FVector2D MovementVectorTweak = MovementVector * 0.15;
 	
 	if (Controller != nullptr)
 	{

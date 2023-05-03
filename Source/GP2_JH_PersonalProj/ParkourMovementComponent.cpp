@@ -34,7 +34,7 @@ UParkourMovementComponent::UParkourMovementComponent()
 	ledgeGrabJumpOffForce = 300.0f;
 	ledgeGrabJumpHeight = 400.0f;
 	sprintSpeed = 1000.0f;
-	slideImpulseAmount = 700.0f;
+	slideImpulseAmount = 800.0f;
 	WallRunSprintSpeed = 1300.0f;
 	slideImpulseAmount2 = 2000.0f;
 	slideImpulseAmountSlow = 100.0f;
@@ -97,7 +97,7 @@ void UParkourMovementComponent::InitializeP()
 {
 	if (MyCharacter != nullptr)
 	{
-		MyCharacter->GetCharacterMovement()->GravityScale = 1.15f;
+		MyCharacter->GetCharacterMovement()->GravityScale = 1.25f;
 		//Default Values
 		DefaultGravity = MyCharacter->GetCharacterMovement()->GravityScale;
 		DefaultGroundFriction = MyCharacter->GetCharacterMovement()->GroundFriction;
@@ -321,13 +321,13 @@ void UParkourMovementComponent::CameraTick()
 			break;
 		case EParkourMovementType::LeftWallRun:
 			CameraTilt(15.0f);
+			if(SprintQueued)
 			PlaySprintingShake();
-
 			break;
 		case EParkourMovementType::RightWallRun:
 			CameraTilt(-15.0f);
+			if(SprintQueued)
 			PlaySprintingShake();
-
 			break;
 		case EParkourMovementType::VerticalWallRun:
 			CameraTilt(0.0f);
@@ -340,7 +340,7 @@ void UParkourMovementComponent::CameraTick()
 			//UE_LOG(LogTemp, Warning, TEXT("Mantle tilt working!!!!"))
 			break;
 		case EParkourMovementType::Slide:
-			CameraTilt(-15.0f);
+			CameraTilt(-10.0f);
 			break;
 		case EParkourMovementType::Crouch:
 			CameraTilt(0.0f);
@@ -1055,7 +1055,7 @@ void UParkourMovementComponent::SlideStart()
 		MyCharacter->Crouch();
 
 		MyCharacter->GetCharacterMovement()->GroundFriction = 0.0f;
-		MyCharacter->GetCharacterMovement()->BrakingDecelerationWalking = 1000.0; //can change it if you want to make it slide for a longer time
+		MyCharacter->GetCharacterMovement()->BrakingDecelerationWalking = 800.0; //can change it if you want to make it slide for a longer time
 		MyCharacter->GetCharacterMovement()->MaxWalkSpeedCrouched = 0.0f;
 
 		//FVector forwardVelNormalized = MyCharacter->GetCharacterMovement()->Velocity.GetSafeNormal(); //might have to change to normalize or kismetVector normalize
@@ -1102,7 +1102,7 @@ void UParkourMovementComponent::SlideStart()
 			OpenSlideGate();
 			slideCount++;
 			//UE_LOG(LogTemp, Warning, TEXT("slideCount: %i"), slideCount)
-			//MyCharacter->FovSlideChange();
+			MyCharacter->FovSlideChange();
 			UE_LOG(LogTemp, Warning, TEXT("SLOW SLIDE!!!!"))
 			normalSlideTiming = 0;
 
