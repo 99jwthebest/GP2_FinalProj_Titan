@@ -31,9 +31,7 @@ The technical highlight of the project lies in the character controller—built 
 
 ---
 
-## 🖼️ Screenshots & Gameplay Preview
-
-## 🎮 Gameplay GIFs
+## 🎮 Gameplay GIF
 
 ![Combat](_RepoAssets/SaveTitan_GameplayGif_optim.gif)  
 
