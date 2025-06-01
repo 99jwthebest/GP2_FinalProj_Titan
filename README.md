@@ -108,7 +108,7 @@ This game was developed by **Joseph Hernandez** as a solo programmer with collab
 ### 🎮 Gameplay GIFs
 
 **⚔️ Combat **  
-![Combat](RepoAssets/NeonP_Combat1.gif)  
+![Combat](RepoAssets/SaveTitan_GameplayGif_optim.gif)  
 ![Dodge](RepoAssets/NeonP_Combat2.gif)  
 ![Enemy Waves](RepoAssets/NeonP_Combat3.gif)  
 
